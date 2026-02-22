@@ -1,4 +1,4 @@
-const API = "http://localhost:5000/api";
+const API = "https://project-cloudmama.onrender.com/api";
 let allNotes = [];
 
 const getToken = () => localStorage.getItem("cm_token");
