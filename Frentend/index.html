@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>CloudMama – College Notes Platform</title>
+  <link rel="stylesheet" href="style.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet"/>
+</head>
+<body>
+
+  <div class="bg-orbs">
+    <div class="orb orb1"></div>
+    <div class="orb orb2"></div>
+    <div class="orb orb3"></div>
+  </div>
+
+  <nav class="navbar">
+    <div class="nav-logo">☁ <span>Cloud</span>Mama</div>
+    <div class="nav-links">
+      <span id="navCollege" class="nav-college"></span>
+      <button class="btn-logout" id="logoutBtn" onclick="logout()" style="display:none">⏻ Logout</button>
+    </div>
+  </nav>
+
+  <!-- AUTH SECTION -->
+  <section class="auth-section" id="authSection">
+    <div class="auth-left">
+      <div class="auth-brand">
+        <div class="brand-icon">☁</div>
+        <h1>CloudMama</h1>
+        <p>The smart way to share and access college notes. Built by students, for students.</p>
+        <div class="brand-features">
+          <div class="feature-pill">📚 College-wise Notes</div>
+          <div class="feature-pill">🔐 Secure Access</div>
+          <div class="feature-pill">⚡ Instant Upload</div>
+          <div class="feature-pill">📄 PDF Support</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="auth-right">
+      <div class="auth-card">
+        <div class="tab-group">
+          <button class="tab active" id="tabLogin" onclick="switchTab('login')">Login</button>
+          <button class="tab" id="tabRegister" onclick="switchTab('register')">Register</button>
+        </div>
+
+        <form id="loginForm" onsubmit="handleLogin(event)">
+          <div class="form-group">
+            <label>Email Address</label>
+            <div class="input-wrap">
+              <span class="input-icon">✉</span>
+              <input type="email" id="loginEmail" placeholder="you@college.com" required />
+            </div>
+          </div>
+          <div class="form-group">
+            <label>Password</label>
+            <div class="input-wrap">
+              <span class="input-icon">🔑</span>
+              <input type="password" id="loginPassword" placeholder="••••••••" required />
+            </div>
+          </div>
+          <div class="msg" id="loginMsg"></div>
+          <button type="submit" class="btn-primary" id="loginBtn">
+            <span>Login to CloudMama</span>
+            <span class="btn-arrow">→</span>
+          </button>
+          <p class="switch-text">Don't have an account? <a onclick="switchTabDirect('register')">Register here</a></p>
+        </form>
+
+        <form id="registerForm" style="display:none" onsubmit="handleRegister(event)">
+          <div class="form-group">
+            <label>Full Name</label>
+            <div class="input-wrap">
+              <span class="input-icon">👤</span>
+              <input type="text" id="regName" placeholder="Rohith Bogelli" required />
+            </div>
+          </div>
+          <div class="form-group">
+            <label>Email Address</label>
+            <div class="input-wrap">
+              <span class="input-icon">✉</span>
+              <input type="email" id="regEmail" placeholder="you@college.com" required />
+            </div>
+          </div>
+          <div class="form-group">
+            <label>Password</label>
+            <div class="input-wrap">
+              <span class="input-icon">🔑</span>
+              <input type="password" id="regPassword" placeholder="Min 6 characters" required />
+            </div>
+          </div>
+          <div class="form-group">
+            <label>College Name</label>
+            <div class="input-wrap">
+              <span class="input-icon">🏫</span>
+              <input type="text" id="regCollege" placeholder="SR University" required />
+            </div>
+          </div>
+          <div class="msg" id="registerMsg"></div>
+          <button type="submit" class="btn-primary" id="registerBtn">
+            <span>Create Account</span>
+            <span class="btn-arrow">→</span>
+          </button>
+          <p class="switch-text">Already have an account? <a onclick="switchTabDirect('login')">Login here</a></p>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <!-- DASHBOARD -->
+  <section class="dashboard" id="dashboard" style="display:none">
+    <div class="dashboard-inner">
+
+      <div class="welcome-banner">
+        <div class="welcome-left">
+          <div class="welcome-avatar" id="userAvatar"></div>
+          <div>
+            <h2>Welcome back, <span id="userName"></span>! 👋</h2>
+            <p id="userCollege"></p>
+          </div>
+        </div>
+        <button class="btn-add-note" onclick="toggleAddNote()">+ Add Note</button>
+      </div>
+
+      <!-- ADD NOTE FORM -->
+      <div class="add-note-card" id="addNoteCard" style="display:none">
+        <div class="add-note-header">
+          <h3>📝 Add New Note</h3>
+          <button class="close-btn" onclick="toggleAddNote()">✕</button>
+        </div>
+        <form id="addNoteForm" onsubmit="handleAddNote(event)">
+          <div class="form-row">
+            <div class="form-group">
+              <label>Note Title</label>
+              <div class="input-wrap">
+                <span class="input-icon">📌</span>
+                <input type="text" id="noteTitle" placeholder="DBMS Unit 1" required />
+              </div>
+            </div>
+            <div class="form-group">
+              <label>Subject</label>
+              <div class="input-wrap">
+                <span class="input-icon">📖</span>
+                <input type="text" id="noteSubject" placeholder="DBMS" required />
+              </div>
+            </div>
+          </div>
+          <div class="form-group">
+            <label>Description</label>
+            <textarea id="noteDesc" placeholder="Brief description of this note..." rows="3" required></textarea>
+          </div>
+          <div class="form-group">
+            <label>Upload PDF <span class="optional">(Optional)</span></label>
+            <div class="file-upload-wrap">
+              <input type="file" id="noteFile" accept=".pdf" />
+              <label for="noteFile" class="file-label">
+                <span class="file-icon">📎</span>
+                <span id="fileName">Choose PDF file...</span>
+              </label>
+            </div>
+          </div>
+          <div class="msg" id="addNoteMsg"></div>
+          <div class="form-actions">
+            <button type="submit" class="btn-primary">Save Note →</button>
+            <button type="button" class="btn-ghost" onclick="toggleAddNote()">Cancel</button>
+          </div>
+        </form>
+      </div>
+
+      <!-- SEARCH -->
+      <div class="search-wrap">
+        <span class="search-icon">🔍</span>
+        <input type="text" id="searchInput" placeholder="Search by title or subject..." oninput="searchNotes()" />
+      </div>
+
+      <!-- NOTES HEADER -->
+      <div class="section-header">
+        <div>
+          <h3>📚 Notes — <span id="notesCollegeName"></span></h3>
+          <p class="section-sub" id="notesCount"></p>
+        </div>
+        <button class="btn-refresh" onclick="loadNotes()">↻ Refresh</button>
+      </div>
+
+      <div class="notes-grid" id="notesGrid"></div>
+
+      <div class="empty-state" id="emptyState" style="display:none">
+        <div class="empty-icon">📭</div>
+        <h4>No notes yet</h4>
+        <p>Be the first to add a note for your college!</p>
+        <button class="btn-primary" style="width:auto;padding:0.7rem 1.5rem;margin-top:1rem" onclick="toggleAddNote()">+ Add First Note</button>
+      </div>
+
+      <div class="loading-state" id="loadingState" style="display:none">
+        <div class="spinner"></div>
+        <p>Fetching notes...</p>
+      </div>
+
+    </div>
+  </section>
+
+  <script src="script.js"></script>
+</body>
+</html>
